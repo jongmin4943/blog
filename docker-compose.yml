@@ -1,0 +1,61 @@
+---
+version: '3.9'
+networks:
+  min-dev:
+    driver: bridge
+
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+        POSTGRES_USER: "root"
+        POSTGRES_PASSWORD: "root"
+    networks:
+      - min-dev
+    volumes:
+        - C:/workspace/temp/data/:/var/lib/postgresql/data
+
+  redis:
+    image: 'redis:latest'
+    container_name: 'redis'
+    ports:
+      - "6379:6379"
+    networks:
+      - min-dev
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.0
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181 #클라이언트가 주키퍼 접속을 위한 포트
+      ZOOKEEPER_TICK_TIME: 2000  #Tick 단위시간
+      ZOOKEEPER_INIT_LIMIT: 5  #팔로워가 리더와 연결시도를 하는 최대 횟수
+      ZOOKEEPER_SYNC_LIMIT: 2  #팔로워가 리더와 연결된 후, 앙상블 안에서 리더와 동기화되기 위한 제한 수.
+    networks:
+      - min-dev
+    volumes:
+      - C:/workspace/temp/zookeeper-logs/:/zookeeper-logs
+
+  broker:
+    image: confluentinc/cp-kafka:7.3.0
+    container_name: broker
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    user: root
+    environment:
+      KAFKA_BROKER_ID: 1 #broker.id 에 설정되는 정수값(식별자).
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181' #브로커의 메타데이터를 주키퍼에 저장하기 위한 위치. 호스트에 이름을 추가하면 호스트명:포트로 작성할 수 있고, 주키퍼 앙상블시에는 모든 값을 적어줌.
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT #보안을 위한 프로토콜 매핑. PLAINTEXT는 리스너가 암호화되지 않은 것을 말함.
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092  # PLAINTEXT://{public ip혹은 hostname}(consumer나 producer에서 접속할 ip혹은 도메인):9092 kafka 브로커를 가리키는 사용 가능 주소로 초기연결시에 클라이언트에 전달되는 메타 데이터
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1 # cluster 내 broker에 토픽이 분산되어 저장
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1 #트랜잭션 최소 ISR(InSyncReplicas 설정) 수
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1 #트랜잭션 상태에서 복제 수
+    networks:
+      - min-dev
+    volumes:
+      - C:/workspace/temp/kafka-logs/:/kafka-logs
