@@ -1,2 +1,3 @@
 rootProject.name = 'yjm'
 include "transactional-event-listener"
+include "test-api"
