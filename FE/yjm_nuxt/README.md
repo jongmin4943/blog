@@ -1,4 +1,4 @@
-# yjm_vue
+# yjm_nuxt
 
 와잼의 블로그 포스팅시 사용한 Nuxt 프로젝트
 
