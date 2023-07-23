@@ -1,6 +1,6 @@
 package com.min.redisson.redis;
 
-import com.min.redisson.DistributedLock;
+import com.min.redisson.lock.DistributedLock;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
