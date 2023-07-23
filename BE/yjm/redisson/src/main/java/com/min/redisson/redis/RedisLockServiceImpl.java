@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -49,6 +50,7 @@ public class RedisLockServiceImpl implements RedisLockService {
     }
 
     private <T> T execute(final Supplier<T> supplier, final RedisLockTime lockTime, final List<String> keys, final RLock lock) {
+        this.validTransaction();
         try {
             log.debug("{} - lock 획득 시도", keys);
             if (lock.tryLock(lockTime.getWaitTime(), lockTime.getLeaseTime(), lockTime.getTimeUnit())) {
@@ -65,6 +67,7 @@ public class RedisLockServiceImpl implements RedisLockService {
     }
 
     private void execute(final Runnable runnable, final RedisLockTime lockTime, final List<String> keys, final RLock lock) {
+        this.validTransaction();
         try {
             log.debug("{} - lock 획득 시도", keys);
             if (lock.tryLock(lockTime.getWaitTime(), lockTime.getLeaseTime(), lockTime.getTimeUnit())) {
@@ -87,6 +90,12 @@ public class RedisLockServiceImpl implements RedisLockService {
             log.debug("{} - lock 해제 성공", keys);
         } catch (IllegalMonitorStateException e) {
             log.warn("{} - 이미 해제된 lock 입니다.", keys);
+        }
+    }
+
+    private void validTransaction() {
+        if(TransactionSynchronizationManager.isActualTransactionActive()) {
+            throw new DistributedLockException("상위 트랜잭션이 존재하는 경우 Lock 을 사용할 수 없습니다.");
         }
     }
 
