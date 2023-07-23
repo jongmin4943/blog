@@ -1,6 +1,6 @@
 package com.min.redisson.redis;
 
-import com.min.redisson.DistributedLockException;
+import com.min.redisson.lock.DistributedLockException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;

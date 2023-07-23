@@ -1,6 +1,6 @@
 package com.min.redisson.redis;
 
-import com.min.redisson.DistributedLockException;
+import com.min.redisson.lock.DistributedLockException;
 
 import java.util.Collection;
 import java.util.function.Supplier;
