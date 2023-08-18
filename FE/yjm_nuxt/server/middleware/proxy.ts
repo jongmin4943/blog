@@ -6,6 +6,7 @@ export default defineEventHandler(event => {
 	return proxyRequest(event, target.toString(), {
 		headers: {
 			host: target.host,
+			origin: target.origin,
 		},
 	});
 });
