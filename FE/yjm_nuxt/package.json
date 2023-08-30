@@ -9,19 +9,20 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@nuxtjs/eslint-module": "^4.1.0",
     "@types/node": "^18",
+    "@vue/eslint-config-prettier": "^8.0.0",
+    "@vue/eslint-config-typescript": "^11.0.3",
     "eslint": "^8.47.0",
     "eslint-plugin-nuxt": "^4.0.0",
     "eslint-plugin-vue": "^9.17.0",
-    "@vue/eslint-config-prettier": "^8.0.0",
-    "@vue/eslint-config-typescript": "^11.0.3",
     "nuxt": "^3.6.5",
-    "@nuxtjs/eslint-module": "^4.1.0",
-    "typescript": "^5.1.6",
     "prettier": "^3.0.1",
-    "sass": "^1.59.3"
+    "sass": "^1.59.3",
+    "typescript": "^5.1.6"
   },
   "dependencies": {
-    "dayjs": "^1.11.7"
+    "dayjs": "^1.11.7",
+    "log4js": "^6.9.1"
   }
 }

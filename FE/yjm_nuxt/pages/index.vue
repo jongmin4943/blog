@@ -4,6 +4,7 @@
 		<li><NuxtLink to="/useAsycnDataTest">useAsyncData</NuxtLink></li>
 		<li><NuxtLink to="/useFetchTest">useFetchTest</NuxtLink></li>
 		<li><NuxtLink to="/proxyTest">proxyTest</NuxtLink></li>
+		<li><NuxtLink to="/logger">logger</NuxtLink></li>
 	</ul>
 </template>
 <script setup lang="ts"></script>
