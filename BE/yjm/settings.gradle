@@ -2,3 +2,4 @@ rootProject.name = 'yjm'
 include "transactional-event-listener"
 include "test-api"
 include "redisson"
+include "security"
