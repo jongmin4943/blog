@@ -2,7 +2,9 @@ package com.min.testapi;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
@@ -10,19 +12,32 @@ import java.util.Map;
 @RequestMapping("/min/api")
 @Slf4j
 public class TestController {
+    private final TestService testService;
 
-    @GetMapping("/test/{no}")
-    public ResponseEntity<Long> testWithPathVariable(@PathVariable Long no) throws InterruptedException {
-        log.info("testWithPathVariable 호출 no : {}", no);
-        Thread.sleep(1000);
-        return ResponseEntity.ok(no);
+    public TestController(final TestService testService) {
+        this.testService = testService;
     }
 
     @GetMapping("/test")
-    public ResponseEntity<Map<String, Object>> testWithParam(@RequestParam Map<String, Object> data) throws InterruptedException {
-        log.info("testWithParam 호출 data : {}", data);
-        Thread.sleep(1000);
-        return ResponseEntity.ok(data);
+    public ResponseEntity<Map<String, String>> testBigData() {
+        return ResponseEntity.ok(testService.getBigData());
+    }
+
+    @GetMapping("/test-no-zip")
+    public ResponseEntity<Map<String, String>> testBigDataWithoutZip() {
+        return ResponseEntity.ok(testService.getBigData());
+    }
+
+    @GzipResponse(level = 6)
+    @GetMapping("/test-annotation-level6")
+    public ResponseEntity<Map<String, String>> testBigDataWithAnnotationLevel6() {
+        return ResponseEntity.ok(testService.getBigData());
+    }
+
+    @GzipResponse
+    @GetMapping("/test-annotation-level1")
+    public ResponseEntity<Map<String, String>> testBigDataWithAnnotationLevel1() {
+        return ResponseEntity.ok(testService.getBigData());
     }
 
 }
