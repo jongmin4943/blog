@@ -7,6 +7,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class WarmupTest {
 
     @Test
+    void isNumberEqual1() {
+        assertThat(1).isEqualTo(1);
+    }
+
+    @Test
     void isNumberSame1() {
         assertThat(1).isSameAs(1);
     }
