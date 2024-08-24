@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 public class StreamTest {
     @Test
     void streamTest() {
-        Stream.of(1, 2, 3, 4)
+        Stream.of(1, 2, 3)
                 .map(n -> {
                     System.out.println("map");
                     return n;
@@ -23,7 +23,7 @@ public class StreamTest {
 
     @Test
     void streamTestWithLimit() {
-        Stream.of(1, 2, 3, 4)
+        Stream.of(1, 2, 3)
                 .map(n -> {
                     System.out.println("map");
                     return n;
@@ -40,7 +40,7 @@ public class StreamTest {
 
     @Test
     void streamTestWithSorted() {
-        Stream.of(1, 2, 3, 4)
+        Stream.of(1, 2, 3)
                 .map(n -> {
                     System.out.println("map");
                     return n;
